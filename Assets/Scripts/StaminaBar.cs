@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using TMPro; 
 
 public class StaminaBar : MonoBehaviour
 {
 
-    //public Slider timeBar;
+    public Slider timeBar; 
 
-    public Text timeBar; 
-
-    private float startingTime = 100.0f;
-    private float currentTime;
-    public bool isZero = false;
+    private float maxTime = 100;
+    private float currentTime; 
+   // public bool isZero = false;
 
     public static StaminaBar instance;
 
@@ -31,54 +28,48 @@ public class StaminaBar : MonoBehaviour
     void Start()
     {
 
-        timeBar = GetComponent<Text>();
-
-        currentTime = startingTime;
-        timeBar.text = currentTime.ToString(); 
+        currentTime = maxTime;
+        timeBar.maxValue = maxTime;
+        timeBar.value = maxTime; 
+       
        
     }
 
     public void UseTimeRewind(float amount)
     {
 
-        currentTime -= amount;
-           
-
-        if(currentTime <= 0)
+        if (currentTime - amount >= 0)
         {
-            currentTime = 0;
-            StartCoroutine(RegenTimeBar());
-            isZero = true;
-            Debug.Log("Not enough");
+            currentTime -= amount;
+            timeBar.value = currentTime;
+
+
+            if (regen != null)
+            
+                StopCoroutine(regen);
+
+                regen = StartCoroutine(RegenTimeBar());
+
         }
-
-        timeBar.text = currentTime.ToString("0");
-
-
-
-
-        Debug.Log(currentTime); 
-
-            if(regen != null)
-            {
-                StopCoroutine(regen); 
-            }
-
-          regen = StartCoroutine(RegenTimeBar()); 
-        }
-
        
-    
+        else
+        {
+            Debug.Log("Not enough time");
+            RewindTime.instance.StopRewind(); 
+        }
+
+
+        
+        }
 
     private IEnumerator RegenTimeBar()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
 
-        while(currentTime < startingTime)
+        while(currentTime < maxTime)
         {
-            currentTime += startingTime / 100;
-            timeBar.text = currentTime.ToString("0");
-            if (currentTime > 100) currentTime = 100;
+            currentTime += maxTime / 100;
+            timeBar.value = currentTime; 
             yield return regenTick; 
         }
 

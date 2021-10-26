@@ -31,12 +31,12 @@ public class RewindTime : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.R))
         {
             StartRewind();
-            StaminaBar.instance.isZero = false;
+           // StaminaBar.instance.isZero = false;
 
      
         }
 
-        else if (Input.GetKeyUp(KeyCode.R) || StaminaBar.instance.isZero == true)
+        else if (Input.GetKeyUp(KeyCode.R)) 
         {
             StopRewind();
         }
@@ -61,8 +61,9 @@ public class RewindTime : MonoBehaviour
         {
             transform.position = positions[0];
             positions.RemoveAt(0);
-            StaminaBar.instance.UseTimeRewind(Time.deltaTime * 25); 
+            StaminaBar.instance.UseTimeRewind(Time.deltaTime * 20); 
         }
+
         else
         {
             StopRewind(); 
@@ -84,7 +85,7 @@ public class RewindTime : MonoBehaviour
         rb.isKinematic = true; 
     }
 
-    void StopRewind()
+   public void StopRewind()
     {
 
         isRewinding = false;
