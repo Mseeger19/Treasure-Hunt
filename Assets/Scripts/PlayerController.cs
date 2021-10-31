@@ -23,12 +23,27 @@ public class PlayerController : MonoBehaviour
     public int extraJumpValue;
 
     public GameObject endScreen;
-    public GameObject startDialogue; 
+    public GameObject startDialogue;
+
+    public bool isHit;
+
+    float moveBackSpeed = 5f; 
 
     Vector3 originalPos;
 
+    Vector2 posForAnimation;
 
-    Animator animator; 
+    Animator anim; 
+
+  //  public Pigeon.Animator animator; 
+
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+
+        anim = GetComponent<Animator>(); 
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -37,19 +52,25 @@ public class PlayerController : MonoBehaviour
 
         originalPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
 
-        animator = GetComponent<Animator>(); 
+        
+
+        isHit = false;
     }
 
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody2D>();
-    }
 
     private void FixedUpdate()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGrounded);
 
         moveInput = Input.GetAxis("Horizontal");
+
+        posForAnimation = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y); 
+
+        //if(moveInput == 1 && animator.currentAnimation != animator.animations[0])
+       // {
+           // animator.Play(1);
+           // this.gameObject.transform.position = posForAnimation;
+       // }
 
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
 
@@ -61,6 +82,7 @@ public class PlayerController : MonoBehaviour
         {
             flip();
         }
+
     }
 
     private void OnDrawGizmos()
@@ -83,6 +105,23 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(showDialogue());
 
         }
+
+        if (collision.gameObject.tag == "hitBox")
+        {
+            Debug.Log("triggered");
+            isHit = true;
+            HealthBar.instance.TakeHealth(15);
+    
+        }
+      
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "hitBox")
+        {
+            isHit = false; 
+        }
     }
 
     IEnumerator showDialogue()
@@ -102,19 +141,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+
         if (isGrounded)
         {
             extraJumps = 1;
-        }
-
-        if(moveInput != 0)
-        {
-            animator.enabled = true; 
-        }
-
-        else
-        {
-            animator.enabled = false; 
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && extraJumps > 0)
@@ -130,6 +160,11 @@ public class PlayerController : MonoBehaviour
         if (CoinScore.instance.coins == 0)
         {
             endScreen.GetComponent<SpriteRenderer>().enabled = true;
+        }
+
+        if(moveInput == 1)
+        {
+       
         }
 
 

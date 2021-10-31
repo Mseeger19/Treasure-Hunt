@@ -7,10 +7,10 @@ using System.Collections;
 public class HealthBar : MonoBehaviour
 {
 
-    public Slider timeBar;
+    public Slider healthBar;
 
-    private float maxTime = 100;
-    private float currentTime;
+    private float maxHealth = 100;
+    private float currentHealth;
     // public bool isZero = false;
 
     public static HealthBar instance;
@@ -19,57 +19,56 @@ public class HealthBar : MonoBehaviour
 
     private Coroutine regen;
 
+    PlayerController script; 
+
     private void Awake()
     {
         instance = this;
+
+        script = FindObjectOfType<PlayerController>(); 
     }
 
     // Start is called before the first frame update
     void Start()
     {
 
-        currentTime = maxTime;
-        timeBar.maxValue = maxTime;
-        timeBar.value = maxTime;
-
-
+        currentHealth = maxHealth;
+        healthBar.maxValue = maxHealth;
+        healthBar.value = maxHealth;
     }
 
-    public void UseTimeRewind(float amount)
+    public void TakeHealth(float amount)
     {
 
-        if (currentTime - amount >= 0)
+        if (script.isHit == true)
         {
-            currentTime -= amount;
-            timeBar.value = currentTime;
+            currentHealth -= amount;
+            healthBar.value = currentHealth;
 
 
             if (regen != null)
 
                 StopCoroutine(regen);
 
-            regen = StartCoroutine(RegenTimeBar());
+            regen = StartCoroutine(RegenHealthBar());
 
         }
 
         else
         {
-            Debug.Log("Not enough time");
-            RewindTime.instance.StopRewind();
+        
         }
-
-
 
     }
 
-    private IEnumerator RegenTimeBar()
+    public IEnumerator RegenHealthBar()
     {
         yield return new WaitForSeconds(4);
 
-        while (currentTime < maxTime)
+        while (currentHealth < maxHealth)
         {
-            currentTime += maxTime / 100;
-            timeBar.value = currentTime;
+            currentHealth += maxHealth / 100;
+            healthBar.value = currentHealth;
             yield return regenTick;
         }
 

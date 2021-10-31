@@ -12,9 +12,13 @@ public class RewindTime : MonoBehaviour
 
     public static RewindTime instance;
 
+    HealthBar script; 
+
     private void Awake()
     {
-        instance = this; 
+        instance = this;
+
+        script = FindObjectOfType<HealthBar>(); 
     }
 
     // Start is called before the first frame update
@@ -31,8 +35,9 @@ public class RewindTime : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.R))
         {
             StartRewind();
-           // StaminaBar.instance.isZero = false;
 
+            script.RegenHealthBar(); 
+           // StaminaBar.instance.isZero = false;
      
         }
 
