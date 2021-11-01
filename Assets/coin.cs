@@ -5,7 +5,7 @@ using UnityEngine;
 public class coin : MonoBehaviour
 {
 
-    public GameObject endScreen; 
+    //public GameObject endScreen; 
 
 
     // Start is called before the first frame update
@@ -19,7 +19,8 @@ public class coin : MonoBehaviour
         if(collision.gameObject.CompareTag("Player")) 
         {
             Destroy(this.gameObject);
-            CoinScore.instance.coins -= 1; 
+            CoinScore.instance.coins -= 1;
+            FindObjectOfType<audioManager>().Play("Coin");
         }
 
     }

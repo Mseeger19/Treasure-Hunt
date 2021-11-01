@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro; 
+using TMPro;
+using UnityEngine.SceneManagement; 
 
 public class CoinScore : MonoBehaviour
 {
@@ -26,7 +27,9 @@ public class CoinScore : MonoBehaviour
         if(colliderPlayer.IsTouching(colliderCoin))
         {
 
-            coins -= 1; 
+            coins -= 1;
+
+            FindObjectOfType<audioManager>().Play("Coin");
         }
     }
 
@@ -40,6 +43,11 @@ public class CoinScore : MonoBehaviour
     void Update()
     {
         coinsText();
+
+        if(coins <= 0)
+        {
+            SceneManager.LoadScene(3); 
+        }
      
     }
 }

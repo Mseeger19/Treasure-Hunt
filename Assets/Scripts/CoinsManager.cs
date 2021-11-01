@@ -21,7 +21,8 @@ public class CoinsManager : MonoBehaviour
         if(collision.gameObject.tag == "Player")
         {
             Destroy(this.gameObject);
-            
+            FindObjectOfType<audioManager>().Play("Coin");
+
         }
     }
 

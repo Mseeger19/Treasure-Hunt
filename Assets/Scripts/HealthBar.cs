@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement; 
 
 public class HealthBar : MonoBehaviour
 {
@@ -57,6 +58,11 @@ public class HealthBar : MonoBehaviour
         else
         {
         
+        }
+
+        if(currentHealth <= 0)
+        {
+            SceneManager.LoadScene(2); 
         }
 
     }

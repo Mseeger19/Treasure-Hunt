@@ -22,27 +22,31 @@ public class PlayerController : MonoBehaviour
     private int extraJumps;
     public int extraJumpValue;
 
-    public GameObject endScreen;
-    public GameObject startDialogue;
+   // public GameObject endScreen;
+   // public GameObject startDialogue;
+
+    public float knockBackForce; 
 
     public bool isHit;
 
-    float moveBackSpeed = 5f; 
+    float moveBackSpeed = 5f;
 
     Vector3 originalPos;
 
     Vector2 posForAnimation;
 
-    Animator anim; 
+    // Animator anim;
 
-  //  public Pigeon.Animator animator; 
+    Color color = Color.red; 
+
+     //public Pigeon.Animator animator; 
 
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
 
-        anim = GetComponent<Animator>(); 
+       // anim = GetComponent<Animator>(); 
     }
 
     // Start is called before the first frame update
@@ -52,17 +56,19 @@ public class PlayerController : MonoBehaviour
 
         originalPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
 
-        
+        FindObjectOfType<audioManager>().Play("Music");
+
+       // anim = GetComponent<Animator>().enabled = false; 
 
         isHit = false;
+
+        //anim.GetComponent<Animator>().enabled = false; 
     }
 
 
     private void FixedUpdate()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGrounded);
-
-        moveInput = Input.GetAxis("Horizontal");
 
         posForAnimation = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y); 
 
@@ -100,17 +106,18 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "StartDialogue")
-        {
-            StartCoroutine(showDialogue());
-
-        }
+     //   if (collision.gameObject.tag == "StartDialogue")
+       // {
+           // StartCoroutine(showDialogue()); 
 
         if (collision.gameObject.tag == "hitBox")
         {
             Debug.Log("triggered");
             isHit = true;
             HealthBar.instance.TakeHealth(15);
+            rb.AddForce(new Vector2(knockBackForce, 0f));
+
+
     
         }
       
@@ -124,12 +131,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator showDialogue()
-    {
-        startDialogue.GetComponent<SpriteRenderer>().enabled = true; 
-        yield return new WaitForSeconds(10);
-        startDialogue.GetComponent<SpriteRenderer>().enabled = false; 
-    }
+  //  IEnumerator showDialogue()
+   // {
+        //startDialogue.GetComponent<SpriteRenderer>().enabled = true; 
+        //yield return new WaitForSeconds(10);
+        //startDialogue.GetComponent<SpriteRenderer>().enabled = false; 
+   // }
 
     void flip()
     {
@@ -142,6 +149,13 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
 
+        moveInput = Input.GetAxis("Horizontal");
+
+        if(moveInput == 1)
+        {
+            //anim.GetComponent<Animator>().enabled = true;  
+        }
+
         if (isGrounded)
         {
             extraJumps = 1;
@@ -151,21 +165,19 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = Vector2.up * JumpForce;
             extraJumps--;
+
+            FindObjectOfType<audioManager>().Play("Jump"); 
+
         }
         else if (Input.GetKeyDown(KeyCode.Space) && extraJumps == 0 && isGrounded == true)
         {
             rb.velocity = Vector2.up * JumpForce;
         }
 
-        if (CoinScore.instance.coins == 0)
-        {
-            endScreen.GetComponent<SpriteRenderer>().enabled = true;
-        }
-
-        if(moveInput == 1)
-        {
-       
-        }
+        //if (CoinScore.instance.coins == 0)
+        //{
+          //  endScreen.GetComponent<SpriteRenderer>().enabled = true;
+        //}
 
 
     }

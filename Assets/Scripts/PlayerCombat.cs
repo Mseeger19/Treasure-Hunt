@@ -13,14 +13,15 @@ public class PlayerCombat : MonoBehaviour
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
 
-    public int attackDamage; 
+    public int attackDamage;
 
-    Enemy script; 
+    public float attackRate = 2f;
+    float nextAttackTime = 0f; 
 
     // Start is called before the first frame update
     void Start()
     {
-        script = FindObjectOfType<Enemy>(); 
+       
     }
 
     // Update is called once per frame
@@ -28,11 +29,16 @@ public class PlayerCombat : MonoBehaviour
     {
         pos = new Vector2(gameObject.transform.position.x, transform.position.y);
 
-
-       if(Input.GetMouseButtonDown(0))
+        if(Time.time >= nextAttackTime)
         {
-            Attack();
+            if (Input.GetMouseButtonDown(0))
+            {
+                Attack();
+                nextAttackTime = Time.time + 1f / attackRate; 
+            }
         }
+
+       
      
      
     }
@@ -45,7 +51,11 @@ public class PlayerCombat : MonoBehaviour
 
         foreach(Collider2D enemy in hitEnemies)
         {
-            script.TakeDamage(attackDamage); 
+            if(enemy.TryGetComponent(out Enemy enemyScript))
+            {
+                enemyScript.TakeDamage(attackDamage); 
+            }
+            Debug.Log(enemy.name); 
         }
 
         //detect enemies in range of attack

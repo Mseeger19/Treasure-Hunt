@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5408cfdd58c437abdcc9c50a6e0a21, type: 3}
+  m_Name: GotHit
+  m_EditorClassIdentifier: 
+  loop: 0
+  mirror: 0
+  frameDelay: 0.15
+  sprites:
+  - {fileID: 21300000, guid: 2da2d177cdf7e4119a79b1d75065156f, type: 3}
+  - {fileID: 21300000, guid: eec51ebcc024e49d18d266652dc56a7e, type: 3}
+  - {fileID: 21300000, guid: 5710d5856bbd2497a840a8dc02a90849, type: 3}
+  endSprite: {fileID: 21300000, guid: 783c975e9d54549458c1682723c25750, type: 3}
