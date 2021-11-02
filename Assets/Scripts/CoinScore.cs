@@ -29,7 +29,7 @@ public class CoinScore : MonoBehaviour
 
             coins -= 1;
 
-            FindObjectOfType<audioManager>().Play("Coin");
+         
         }
     }
 

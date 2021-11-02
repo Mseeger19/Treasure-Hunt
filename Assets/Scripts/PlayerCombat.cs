@@ -9,6 +9,10 @@ public class PlayerCombat : MonoBehaviour
 
     Vector2 pos;
 
+    public bool attack = false;
+    private int attackCounter = 0;
+    public int attackTime = 25;  
+
     public Transform attackPoint;
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
@@ -38,15 +42,27 @@ public class PlayerCombat : MonoBehaviour
             }
         }
 
-       
-     
+
+        if(attack == true)
+        {
+            attackCounter += 1;
+            if (attackCounter >= attackTime)
+            {
+                attack = false;
+                attackCounter = 0;
+                
+               
+            }
+        }
      
     }
 
     void Attack()
     {
+        animator.Play(1);
 
-      animator.Play(1);
+        attack = true;
+
       Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position,attackRange,enemyLayers);
 
         foreach(Collider2D enemy in hitEnemies)
@@ -57,6 +73,8 @@ public class PlayerCombat : MonoBehaviour
             }
             Debug.Log(enemy.name); 
         }
+
+
 
         //detect enemies in range of attack
         //damage them 

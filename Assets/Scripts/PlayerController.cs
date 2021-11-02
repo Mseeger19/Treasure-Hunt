@@ -39,14 +39,18 @@ public class PlayerController : MonoBehaviour
 
     Color color = Color.red; 
 
-     //public Pigeon.Animator animator; 
+    public Pigeon.Animator animator;
+
+    PlayerCombat playerCombat; 
 
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
 
-       // anim = GetComponent<Animator>(); 
+        playerCombat = FindObjectOfType<PlayerCombat>();
+
+        // anim = GetComponent<Animator>(); 
     }
 
     // Start is called before the first frame update
@@ -58,7 +62,9 @@ public class PlayerController : MonoBehaviour
 
         FindObjectOfType<audioManager>().Play("Music");
 
-       // anim = GetComponent<Animator>().enabled = false; 
+        // anim = GetComponent<Animator>().enabled = false;
+
+   
 
         isHit = false;
 
@@ -151,10 +157,20 @@ public class PlayerController : MonoBehaviour
 
         moveInput = Input.GetAxis("Horizontal");
 
-        if(moveInput == 1)
+        if(moveInput != 0) //&& playerCombat.attack == false)
         {
-            //anim.GetComponent<Animator>().enabled = true;  
+            
+            if((animator.currentAnimation == null || animator.currentAnimation.name != "Walking"))
+            {
+                if (playerCombat.attack == false) animator.Play(0);
+            }
         }
+
+        else
+        {
+            if (playerCombat.attack == false) animator.Stop();
+        }
+
 
         if (isGrounded)
         {

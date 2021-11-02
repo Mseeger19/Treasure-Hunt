@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad5408cfdd58c437abdcc9c50a6e0a21, type: 3}
   m_Name: Walking
   m_EditorClassIdentifier: 
-  loop: 0
+  loop: 1
   mirror: 0
   frameDelay: 0.1
   sprites:
